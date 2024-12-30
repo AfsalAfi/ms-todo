@@ -46,7 +46,7 @@ jobs:
           port: 22
           script: |
             # Navigate to the application directory
-            cd /path/to/your/app
+            cd ms-todo
 
             # Pull the latest images from Docker Hub
             docker-compose pull
