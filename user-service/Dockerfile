@@ -8,7 +8,9 @@ RUN npm install
 
 RUN npm install -g typescript ts-node
 
-COPY . .
+COPY ./proto /proto
+
+COPY ./user-service/ .
 
 EXPOSE 50051
 

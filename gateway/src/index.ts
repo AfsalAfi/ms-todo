@@ -94,6 +94,10 @@ const userPackageDef = protoLoader.loadSync(userProtoPath, {
 const todoProto = grpc.loadPackageDefinition(todoPackageDef) as any;
 const userProto = grpc.loadPackageDefinition(userPackageDef) as any;
 
+console.log(`${process.env.USER_SERVICE_HOST}:${process.env.USER_SERVICE_PORT}`,"$$$",
+`${process.env.TODO_SERVICE_HOST}:${process.env.TODO_SERVICE_PORT}`);
+
+
 // Initialize gRPC clients for TodoService and UserService
 const userServiceAddress = `${process.env.USER_SERVICE_HOST}:${process.env.USER_SERVICE_PORT}`;
 const todoServiceAddress = `${process.env.TODO_SERVICE_HOST}:${process.env.TODO_SERVICE_PORT}`;

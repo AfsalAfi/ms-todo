@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+spec:
+  replicas: 2 # Number of replicas for high availability
+  selector:
+    matchLabels:
+      app: user-service # Label selector for the pods
+  template:
+    metadata:
+      labels:
+        app: user-service # Label for the pods
+    spec:
+      containers:
+        - name: user-service
+          image: afsalafzi/user-service:latest # Docker image for the user service
+          ports:
+            - containerPort: 50051 # Expose container's port 50051
+          volumeMounts:
+            - name: proto-volume
+              mountPath: /proto # Mount proto files inside the container
+            - name: app-volume
+              mountPath: /app # Mount app code inside the container
+      volumes:
+        - name: proto-volume
+          hostPath:
+            path: C:/Users/afsal/WebDevolpment/Brototype/week22-microservice_2/todo/proto # Path on host machine for proto files
+            type: Directory # Mount proto files as a directory
+        - name: app-volume
+          hostPath:
+            path: C:/Users/afsal/WebDevolpment/Brototype/week22-microservice_2/todo/user-service # Path on host machine for user service code
+            type: Directory # Mount user service code as a directory
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+spec:
+  selector:
+    app: user-service # Select pods with this label
+  ports:
+    - protocol: TCP
+      port: 50051 # Expose the service on port 50051
+      targetPort: 50051 # Route traffic to the container's port 50051
+  type: ClusterIP # Internal service for communication within the cluster

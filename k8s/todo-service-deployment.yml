@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-service
+  labels:
+    app: todo-service
+spec:
+  replicas: 2  # Create two replicas of the service for scalability
+  selector:
+    matchLabels:
+      app: todo-service  # Select pods with this label
+  template:
+    metadata:
+      labels:
+        app: todo-service  # Label for the pods
+    spec:
+      containers:
+        - name: todo-service
+          image: afsalafzi/todo-service:latest  # Image for the todo service
+          ports:
+            - containerPort: 50052              # Expose container's port 50052
+          env:                                  # Environment variables for configuration
+            - name: USER_SERVICE_HOST
+              value: "user-service"                    # Host for user-service
+            - name: USER_SERVICE_PORT
+              value: "50051"                    # Port for user-service
+          volumeMounts:
+            - name: proto-volume
+              mountPath: /proto                 # Mount the proto files here inside the container
+            - name: app-volume
+              mountPath: /app                   # Mount the app directory here inside the container
+      volumes:
+        - name: proto-volume
+          configMap:
+            name: proto-files  # Mount the ConfigMap named proto-files as a volume
+        - name: app-volume
+          hostPath:
+            path: /mnt/c/Users/afsal/WebDevolpment/Brototype/week22-microservice_2/todo/todo-service  # Path on host machine for the todo service code
+            type: Directory                     # Mount the todo service files as a directory
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-service
+  labels:
+    app: todo-service
+spec:
+  selector:
+    app: todo-service  # Select pods with this label
+  ports:
+    - protocol: TCP
+      port: 50052       # Expose the service on port 50052
+      targetPort: 50052 # Route traffic to the container's 50052 port
+  type: ClusterIP        # Internal service type for communication within the cluster

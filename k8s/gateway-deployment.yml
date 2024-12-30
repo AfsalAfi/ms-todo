@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: afsalafzi/gateway:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: TODO_SERVICE_HOST
+              value: "todo-service"  # Kubernetes service name for the todo service
+            - name: TODO_SERVICE_PORT
+              value: "50052"  # Port for the todo service
+            - name: USER_SERVICE_HOST
+              value: "user-service"  # Port for the todo service
+            - name: TODO_SERVICE_PORT
+              value: "50051"  # Port for the todo service
+          volumeMounts:
+            - name: proto-volume
+              mountPath: /proto   # Mounting the proto directory
+            - name: app-volume
+              mountPath: /app     # Mounting the application directory
+      volumes:
+        - name: proto-volume
+          hostPath:
+            path: C:/Users/afsal/WebDevolpment/Brototype/week22-microservice_2/todo/proto
+            type: Directory
+        - name: app-volume
+          hostPath:
+            path: C:/Users/afsal/WebDevolpment/Brototype/week22-microservice_2/todo/gateway  
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+spec:
+  selector:
+    app: gateway
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP

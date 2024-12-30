@@ -4,11 +4,11 @@ WORKDIR /app
 
 COPY gateway/package*.json ./
 
-RUN npm install
+RUN npm install && npm install -g typescript ts-node
 
-RUN npm install -g typescript ts-node
+COPY ./proto /proto
 
-COPY . .
+COPY gateway/ ./
 
 EXPOSE 3000
 
