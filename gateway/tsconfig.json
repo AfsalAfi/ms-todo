@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                          // Target modern JavaScript
+    "module": "CommonJS",                     // Use CommonJS for compatibility with Node.js
+    "esModuleInterop": true,                  // Enable default import compatibility
+    "skipLibCheck": true,                     // Skip type checking for declaration files
+    "strict": true,                           // Enable strict type checking
+    "baseUrl": ".",                          // Set base URL for module resolution
+    "paths": {
+      "@/*": ["src/*"]                        // Alias '@/' to 'src/' for cleaner imports
+    },
+    "outDir": "./dist",                       // Output directory for compiled files
+    "rootDir": "./src",                       // Root directory for source files
+    "resolveJsonModule": true,                // Allow importing JSON modules
+    "types": ["node", "express"],             // Include Node.js and Express types
+    "moduleResolution": "node"               // Use Node.js module resolution
+  },
+  "include": ["src/**/*"],                 // Include all TypeScript files in 'src'
+  "exclude": ["node_modules", "dist"]         // Exclude node_modules and compiled output
+}

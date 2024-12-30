@@ -1,0 +1,4 @@
+client/node_modules
+gateway/node_modules
+todo-service/node_modules
+user-service/node_modules

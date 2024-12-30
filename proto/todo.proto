@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+service TodoService {
+  rpc GetTodos(GetTodosRequest) returns (GetTodosResponse);
+  rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse);
+  rpc CompleteTodo(CompleteTodoRequest) returns (CompleteTodoResponse);  
+}
+
+message GetTodosRequest {
+  int32 userId = 1;
+}
+
+message GetTodosResponse {
+  repeated Todo todos = 1;
+}
+
+message CreateTodoRequest {
+  int32 userId = 1;
+  string title = 2;
+}
+
+message CreateTodoResponse {
+  Todo todo = 1;
+}
+
+message CompleteTodoRequest {
+  string id = 1;  
+}
+
+message CompleteTodoResponse {
+  Todo todo = 1;  
+}
+
+message Todo {
+  string id = 1;
+  string title = 2;
+  bool completed = 3;
+}

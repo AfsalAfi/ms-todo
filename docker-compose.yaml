@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    volumes:
+      - ./gateway:/app
+      - /app/node_modules
+      - ./proto:/proto 
+    ports:
+      - "3000:3000"
+    command: npm run dev
+    depends_on:
+      - user-service
+      - todo-service
+    environment:
+      - NODE_ENV=development
+      - PROTO_PATH=/proto
+      - USER_SERVICE_HOST=user-service
+      - USER_SERVICE_PORT=50051
+      - TODO_SERVICE_HOST=todo-service
+      - TODO_SERVICE_PORT=50052
+
+  user-service:
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    volumes:
+      - ./user-service:/app
+      - /app/node_modules
+      - ./proto:/proto 
+    ports:
+      - "50051:50051"
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+      - PROTO_PATH=/proto 
+
+  todo-service:
+    build:
+      context: .
+      dockerfile: todo-service/Dockerfile
+    volumes:
+      - ./todo-service:/app
+      - /app/node_modules
+      - ./proto:/proto 
+    ports:
+      - "50052:50052"
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+      - PROTO_PATH=/proto 
+      - USER_SERVICE_HOST=user-service
+      - USER_SERVICE_PORT=50051
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
