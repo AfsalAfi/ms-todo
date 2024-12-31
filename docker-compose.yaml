@@ -22,6 +22,11 @@ services:
       - USER_SERVICE_PORT=50051
       - TODO_SERVICE_HOST=todo-service
       - TODO_SERVICE_PORT=50052
+    deploy:
+      resources:
+        limits:
+          memory: 256M      # Limit memory usage to 256MB
+          cpus: "0.25"      # Limit CPU usage to 0.25 CPU core (25%)
 
   user-service:
     build:
@@ -36,7 +41,12 @@ services:
     command: npm run dev
     environment:
       - NODE_ENV=development
-      - PROTO_PATH=/proto 
+      - PROTO_PATH=/proto
+    deploy:
+      resources:
+        limits:
+          memory: 256M      # Limit memory usage to 256MB
+          cpus: "0.25"      # Limit CPU usage to 0.25 CPU core (25%)
 
   todo-service:
     build:
@@ -54,6 +64,11 @@ services:
       - PROTO_PATH=/proto 
       - USER_SERVICE_HOST=user-service
       - USER_SERVICE_PORT=50051
+    deploy:
+      resources:
+        limits:
+          memory: 256M      # Limit memory usage to 256MB
+          cpus: "0.25"      # Limit CPU usage to 0.25 CPU core (25%)
 
   client:
     build:
@@ -70,3 +85,8 @@ services:
       - CHOKIDAR_USEPOLLING=true
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          memory: 256M      # Limit memory usage to 256MB
+          cpus: "0.25"      # Limit CPU usage to 0.25 CPU core (25%)
