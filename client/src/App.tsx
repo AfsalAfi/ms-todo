@@ -12,11 +12,16 @@ const App = () => {
   const [title, setTitle] = useState<string>("");
   const [userId, setUserId] = useState<number>(1);
 
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+
+  console.log(API_BASE_URL);
+
   // Fetch todos whenever userId changes
   useEffect(() => {
-    axios.get<Todo[]>(`http://localhost:3000/todos/${userId}`).then((response) => {
+    axios.get<Todo[]>(`${API_BASE_URL}/todos/${userId}`).then((response) => {
       console.log(response.data);
-      
+
       setTodos(response.data);
     });
   }, [userId]);
@@ -24,19 +29,23 @@ const App = () => {
   // Add a new todo
   const addTodo = () => {
     if (title.trim()) {
-      axios.post<Todo>("http://localhost:3000/todos", { userId, title }).then((response) => {
-        setTodos((prevTodos) => [...prevTodos, response.data]);
-        setTitle("");
-      });
+      axios
+        .post<Todo>(`${API_BASE_URL}/todos`, { userId, title })
+        .then((response) => {
+          setTodos((prevTodos) => [...prevTodos, response.data]);
+          setTitle("");
+        });
     }
   };
 
   // Mark todo as completed
   const completeTodo = (id: number) => {
-    axios.put(`http://localhost:3000/todos/${id}/complete`).then((response) => {
+    axios.put(`${API_BASE_URL}/todos/${id}/complete`).then((response) => {
       const updatedTodo = response.data;
       setTodos((prevTodos) =>
-        prevTodos.map((todo) => (todo.id === updatedTodo.id ? updatedTodo : todo))
+        prevTodos.map((todo) =>
+          todo.id === updatedTodo.id ? updatedTodo : todo
+        )
       );
     });
   };
@@ -44,7 +53,9 @@ const App = () => {
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
-        <h1 className="text-3xl font-bold text-center text-indigo-600 mb-6">Todo App</h1>
+        <h1 className="text-3xl font-bold text-center text-indigo-600 mb-6">
+          Todo App
+        </h1>
         <div className="flex justify-between mb-4">
           <input
             type="number"
@@ -79,7 +90,11 @@ const App = () => {
                 todo.completed ? "bg-green-100" : "bg-white"
               }`}
             >
-              <span className={`text-lg ${todo.completed ? "line-through text-gray-400" : ""}`}>
+              <span
+                className={`text-lg ${
+                  todo.completed ? "line-through text-gray-400" : ""
+                }`}
+              >
                 {todo.title}
               </span>
               <input
