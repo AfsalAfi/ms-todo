@@ -6,10 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: "0.0.0.0", // Allow external access (important for Docker)
-    port: 5173, // Use the default Vite port
     hmr: {
-      protocol: "ws", // Ensure WebSocket communication works
-      host: "localhost", // Can be your Docker container IP or localhost
+      host: '52.66.76.120',  // Replace with your EC2 instance's public IP or domain
+      protocol: 'ws',        // Use WebSocket for HMR
+      port: 5173,            // The port your Vite server is running on
     },
   },
 });
