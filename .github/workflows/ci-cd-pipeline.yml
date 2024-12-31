@@ -3,7 +3,7 @@ name: CI/CD Pipeline for Docker Compose Application
 on:
   push:
     branches:
-      - main # Trigger the pipeline on pushes to the main branch
+      - main  # Trigger the pipeline on pushes to the main branch
 
 jobs:
   build_and_deploy:
@@ -48,6 +48,9 @@ jobs:
           script: |
             # Navigate to the application directory
             cd ms-todo
+
+            # Pull the latest code from GitHub
+            git pull origin main  # This ensures the latest code is pulled
 
             # Pull the latest images from Docker Hub
             docker-compose pull
