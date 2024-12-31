@@ -68,6 +68,6 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
-      - VITE_API_BASE_URL=http://gateway:3000
+      - VITE_API_BASE_URL=http://52.66.76.120:3000
     extra_hosts:
       - "host.docker.internal:host-gateway"
