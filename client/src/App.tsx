@@ -54,7 +54,7 @@ const App = () => {
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
         <h1 className="text-3xl font-bold text-center text-indigo-600 mb-6">
-          Todo App ✨✨
+          Todo App ✨
         </h1>
         <div className="flex justify-between mb-4">
           <input
